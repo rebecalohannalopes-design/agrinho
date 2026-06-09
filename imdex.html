@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Missão Agro Sustentável</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>🌱 Missão Agro Sustentável 🌾</h1>
+
+    <div class="status">
+        <p>🌾 Produção: <span id="producao">50</span></p>
+        <p>💰 Lucro: <span id="lucro">50</span></p>
+        <p>🌱 Sustentabilidade: <span id="sustentabilidade">50</span></p>
+    </div>
+
+    <div class="cenario">
+        <h2 id="pergunta">Você deseja expandir sua produção. O que fazer?</h2>
+
+        <button onclick="escolha(1)">Desmatar nova área</button>
+        <button onclick="escolha(2)">Recuperar área degradada</button>
+    </div>
+
+    <p id="resultado"></p>
+
+    <script src="script.js"></script>
+</body>
+</html>

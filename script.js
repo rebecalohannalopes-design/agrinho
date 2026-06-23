@@ -1,42 +1,81 @@
-let producao = 50;
-let lucro = 50;
-let sustentabilidade = 50;
+const player = document.getElementById("player");
+const item = document.getElementById("item");
+const scoreText = document.getElementById("score");
+const message = document.getElementById("message");
 
-function atualizarStatus() {
-    document.getElementById("producao").innerText = producao;
-    document.getElementById("lucro").innerText = lucro;
-    document.getElementById("sustentabilidade").innerText = sustentabilidade;
+let score = 0;
 
-    if (sustentabilidade <= 0) {
-        alert("Você perdeu! O meio ambiente foi degradado.");
-        location.reload();
-    }
+let playerX = 280;
+let playerY = 180;
 
-    if (lucro <= 0) {
-        alert("Você perdeu! Sua fazenda faliu.");
-        location.reload();
-    }
+const gameWidth = 600;
+const gameHeight = 400;
 
-    if (producao >= 100 && sustentabilidade >= 50) {
-        alert("Parabéns! Você venceu com produção sustentável!");
-        location.reload();
+let itemX;
+let itemY;
+let itemType;
+
+function spawnItem() {
+
+    itemX = Math.random() * 550;
+    itemY = Math.random() * 350;
+
+    item.style.left = itemX + "px";
+    item.style.top = itemY + "px";
+
+    const random = Math.random();
+
+    if(random < 0.7){
+        item.innerHTML = "🌱";
+        itemType = "good";
+    }else{
+        item.innerHTML = "🛢️";
+        itemType = "bad";
     }
 }
 
-function escolha(opcao) {
-    let resultado = document.getElementById("resultado");
+spawnItem();
 
-    if (opcao === 1) {
-        producao += 20;
-        lucro += 20;
-        sustentabilidade -= 30;
-        resultado.innerText = "Você aumentou a produção, mas prejudicou o meio ambiente.";
-    } else {
-        producao += 10;
-        lucro += 10;
-        sustentabilidade += 20;
-        resultado.innerText = "Boa escolha! Crescimento com responsabilidade ambiental.";
+document.addEventListener("keydown", (e)=>{
+
+    const step = 20;
+
+    if(e.key === "ArrowUp") playerY -= step;
+    if(e.key === "ArrowDown") playerY += step;
+    if(e.key === "ArrowLeft") playerX -= step;
+    if(e.key === "ArrowRight") playerX += step;
+
+    playerX = Math.max(0, Math.min(gameWidth - 50, playerX));
+    playerY = Math.max(0, Math.min(gameHeight - 50, playerY));
+
+    player.style.left = playerX + "px";
+    player.style.top = playerY + "px";
+
+    checkCollision();
+});
+
+function checkCollision(){
+
+    const dx = playerX - itemX;
+    const dy = playerY - itemY;
+
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    if(distance < 40){
+
+        if(itemType === "good"){
+            score += 10;
+        }else{
+            score -= 5;
+        }
+
+        scoreText.textContent = score;
+
+        if(score >= 100){
+            message.innerHTML =
+            "🏆 Parabéns! Você promoveu uma agricultura sustentável!";
+        }
+
+        spawnItem();
     }
-
-    atualizarStatus();
 }
